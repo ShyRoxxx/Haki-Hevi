@@ -88,13 +88,22 @@ body {
 }
 
 :focus-visible {
-  outline: 3px solid var(--turmeric);
+  outline: 3px solid var(--ink);
   outline-offset: 3px;
   border-radius: 6px;
 }
 
-.on-leaf :focus-visible {
+.on-leaf :focus-visible,
+.leaf-field :focus-visible,
+.bg-leaf-deep:focus-visible,
+.bg-ink:focus-visible {
   outline-color: var(--turmeric);
+}
+
+@media (max-width: 1023px) {
+  html {
+    scroll-padding-bottom: 6rem;
+  }
 }
 
 html {
@@ -169,6 +178,10 @@ html {
   font-variant-numeric: tabular-nums;
   color: var(--ink-2);
   background: var(--card);
+  transition:
+    background-color 200ms var(--ease-out),
+    border-color 200ms var(--ease-out),
+    color 200ms var(--ease-out);
 }
 
 .code-mark[data-hit="true"] {
@@ -256,6 +269,7 @@ html {
 
 }
 
+@layer components {
 /* Körnung für Farbflächen */
 .grain {
   position: relative;
@@ -290,7 +304,14 @@ html {
     radial-gradient(40% 35% at 20% 30%, rgb(122 168 76 / 0.55), transparent 70%),
     radial-gradient(35% 30% at 80% 70%, rgb(233 185 73 / 0.22), transparent 70%),
     radial-gradient(45% 40% at 60% 10%, rgb(35 58 18 / 0.7), transparent 70%);
-  animation: drift 26s ease-in-out infinite alternate;
+}
+
+@media (min-width: 768px) {
+  .leaf-field::before {
+    animation: drift 26s ease-in-out infinite alternate;
+  }
+}
+
 }
 
 @keyframes drift {
@@ -310,6 +331,8 @@ html {
 .reduce-motion *,
 .reduce-motion *::before,
 .reduce-motion *::after {
+  animation-delay: 0s !important;
+  transition-delay: 0s !important;
   animation-duration: 0.001ms !important;
   animation-iteration-count: 1 !important;
   transition-duration: 0.001ms !important;
@@ -326,7 +349,7 @@ summary::-webkit-details-marker {
 /* ---------- Hero: Karte ---------- */
 .hero-map {
   container-type: size;
-  height: clamp(16rem, 72vw, 28rem);
+  height: clamp(17rem, 84vw, 28rem);
 }
 
 @media (min-width: 1024px) {
@@ -344,7 +367,7 @@ summary::-webkit-details-marker {
 @keyframes hero-map-in {
   from {
     opacity: 0.4;
-    transform: scale(1.035);
+    transform: scale(1.02);
   }
   to {
     opacity: 1;
@@ -389,17 +412,17 @@ summary::-webkit-details-marker {
 
 @keyframes ring-once {
   from {
-    opacity: 0.9;
-    transform: translate(-50%, -50%) scale(0.3);
+    opacity: 0.7;
+    transform: translate(-50%, -50%) scale(0.6);
   }
   to {
     opacity: 0;
-    transform: translate(-50%, -50%) scale(2.2);
+    transform: translate(-50%, -50%) scale(1.8);
   }
 }
 
 .hero-map-img {
-  animation: hero-map-in 1.4s var(--ease-out) both;
+  animation: hero-map-in 900ms var(--ease-out) both;
 }
 
 .hero-line {
@@ -418,7 +441,7 @@ summary::-webkit-details-marker {
 .hero-ring-once {
   opacity: 0;
   transform: translate(-50%, -50%);
-  animation: ring-once 1.4s var(--ease-out) 1.1s both;
+  animation: ring-once 900ms var(--ease-out) 900ms both;
 }
 
 @media (min-width: 1024px) {
@@ -433,4 +456,75 @@ summary::-webkit-details-marker {
 
 .hero-pin {
   transform: translate(-50%, -100%);
+}
+
+/* Kartenbeschriftung: auf dem Handy über dem Punkt, sonst rechts daneben */
+.map-label--right {
+  left: 0.85rem !important;
+  bottom: auto !important;
+  top: 0;
+  transform: translateY(-50%) !important;
+}
+
+.map-dot {
+  left: 0;
+  top: 0;
+  transform: translate(-50%, -50%);
+}
+
+.map-label {
+  left: 0;
+  bottom: 0.75rem;
+  transform: translateX(-50%);
+}
+
+@media (min-width: 640px) {
+  .map-label,
+  .map-label--right {
+    left: 0.85rem;
+    bottom: auto;
+    top: 0;
+    transform: translateY(-50%);
+  }
+}
+
+/* Seitliche Einblendungen dürfen nie horizontales Scrollen erzeugen */
+main,
+footer {
+  overflow-x: clip;
+}
+
+#mobile-menu::before {
+  animation: none;
+}
+
+/* Rückmeldung im Speiseplan-Filter */
+.fade-in,
+.day-panel {
+  transition:
+    opacity 200ms var(--ease-out),
+    translate 200ms var(--ease-out);
+}
+
+@starting-style {
+  .fade-in {
+    opacity: 0;
+    translate: 0 3px;
+  }
+  .day-panel {
+    opacity: 0;
+    translate: 0 6px;
+  }
+}
+
+/* FAQ-Antwort sanft einblenden */
+@keyframes faq-in {
+  from {
+    opacity: 0;
+    transform: translateY(-4px);
+  }
+}
+
+.faq[open] .faq-body {
+  animation: faq-in 220ms var(--ease-out);
 }

@@ -42,7 +42,7 @@ export default function AllergyPage() {
         </h2>
         <ol className="mt-10 grid gap-8 md:grid-cols-3">
           {steps.map((s, i) => (
-            <li key={s.t} data-reveal="up" data-delay={String(i * 0.08)}>
+            <li key={s.t} data-reveal="up">
               <span className="grid size-11 place-items-center rounded-full bg-leaf-pale font-display text-lg font-semibold text-leaf-night">{i + 1}</span>
               <h3 className="h3 mt-5">{s.t}</h3>
               <p className="mt-2 text-ink-2">{s.d}</p>

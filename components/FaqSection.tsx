@@ -2,9 +2,9 @@ import Link from "next/link";
 import { FaqList } from "./FaqList";
 import type { Faq } from "@/lib/content";
 
-export function FaqSection({ faqs, title = "Was Kitas und Eltern uns oft fragen", more = true }: { faqs: Faq[]; title?: string; more?: boolean }) {
+export function FaqSection({ faqs, title = "Was Kitas und Eltern uns oft fragen", more = true, topPad = false }: { faqs: Faq[]; title?: string; more?: boolean; topPad?: boolean }) {
   return (
-    <section className="section pt-0" aria-labelledby="faq-title">
+    <section className={`section ${topPad ? "" : "pt-0"}`} aria-labelledby="faq-title">
       <div className="wrap grid gap-10 lg:grid-cols-[minmax(0,5fr)_minmax(0,7fr)] lg:gap-16">
         <div>
           <h2 id="faq-title" className="h2 max-w-[16ch]" data-reveal="up">

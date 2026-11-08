@@ -2,6 +2,8 @@ import Link from "next/link";
 import { ArrowRight, Leaf } from "lucide-react";
 import { allergens, weekMenu } from "@/lib/content";
 
+const label = (id: string) => allergens.find((a) => a.id === id)?.label;
+
 const code = (id: string) => allergens.find((a) => a.id === id)?.code;
 
 export function WeekStrip() {
@@ -17,8 +19,8 @@ export function WeekStrip() {
           </Link>
         </div>
         <ol className="mt-12 grid gap-4 sm:grid-cols-2 lg:grid-cols-5">
-          {weekMenu.days.map((d, i) => (
-            <li key={d.day} className="rounded-[var(--radius-surface)] bg-card p-5 text-ink" data-reveal="up" data-delay={String(i * 0.06)}>
+          {weekMenu.days.map((d) => (
+            <li key={d.day} className="rounded-[var(--radius-surface)] bg-card p-5 text-ink" data-reveal="up">
               <p className="flex items-baseline justify-between font-semibold">
                 {d.day}
                 <span className="tnum text-[0.9rem] font-normal text-ink-3">{d.date}</span>
@@ -30,9 +32,10 @@ export function WeekStrip() {
                     {dish.kind === "Vegetarisch" ? "Vegetarisch" : "Mit Fleisch"}
                   </p>
                   <p className="mt-0.5 leading-snug">{dish.name}</p>
-                  <p className="mt-2 flex flex-wrap gap-1" aria-label="Allergen-Kennziffern">
+                  <p className="mt-2 flex flex-wrap gap-1">
                     {dish.allergens.map((a) => (
-                      <span key={a} className="code-mark !h-6 !min-w-6 !text-[0.8rem]">
+                      <span key={a} className="code-mark !h-6 !min-w-6 !text-[0.875rem]" title={label(a)}>
+                        <span className="sr-only">{label(a)}: Kennziffer </span>
                         {code(a)}
                       </span>
                     ))}

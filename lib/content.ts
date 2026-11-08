@@ -13,7 +13,7 @@ export const business = {
   district: "Niedernhägener Bauerschaft",
   region: "Region Hannover",
   phone: "+49 511 77951377",
-  phoneDisplay: "0511 779 513 77",
+  phoneDisplay: "0511\u00a0779\u00a0513\u00a077",
   fax: "0511 779 513 78",
   email: "info@haki-hevi.de",
   geo: { lat: 52.4520832, lon: 9.7857494 },
@@ -246,8 +246,8 @@ export const steps: { title: string; text: string }[] = [
 /* Einrichtungen aus dem Bestellportal (Karte)                         */
 /* ------------------------------------------------------------------ */
 
-export const deliveryPoints: { name: string; place: string; lat: number; lon: number; align?: "left" | "right" }[] = [
-  { name: "Friedrich-Dierks-Schule", place: "Isernhagen HB", lat: 52.4758873, lon: 9.8023821, align: "right" },
+export const deliveryPoints: { name: string; place: string; lat: number; lon: number; align?: "above" | "right" }[] = [
+  { name: "Friedrich-Dierks-Schule", place: "Isernhagen HB", lat: 52.4758873, lon: 9.8023821, align: "above" },
   { name: "Grundschule Brelingen", place: "Wedemark", lat: 52.5530283, lon: 9.6824534, align: "right" },
 ];
 
@@ -267,7 +267,7 @@ export type Faq = { q: string; a: string };
 export const homeFaqs: Faq[] = [
   {
     q: "Was kostet das Mittagessen?",
-    a: "Die Anmeldung im Bestellportal ist kostenfrei. Kosten entstehen erst mit der Bestellung und richten sich nach Art und Anzahl der Mahlzeiten. Für Kitas, Schulen und Firmen erstellen wir ein Angebot nach Kinderzahl und Liefertagen — schreiben Sie uns kurz, wie viele Essen Sie täglich brauchen.",
+    a: "Die Anmeldung im Bestellportal ist kostenfrei. Kosten entstehen erst mit der Bestellung und richten sich nach Art und Anzahl der Mahlzeiten. Ein Beispiel: An der Lutherschule Hannover kostet ein Mittagessen 4,00 €, mit gültiger BuT-Bescheinigung ist es für das Kind kostenfrei. Für Ihre Einrichtung erstellen wir ein Angebot nach Kinderzahl und Liefertagen.",
   },
   {
     q: "Bis wann muss bestellt werden?",
@@ -313,7 +313,7 @@ export const servicePages: Record<string, ServicePage> = {
     slug: "kita",
     path: "/kita-verpflegung",
     metaTitle: "Kita-Catering Isernhagen & Hannover | Haki & Hevi",
-    metaDescription: "Täglich frisch gekochtes Mittagessen für Kitas und Krippen aus Isernhagen NB: ohne Convenience, ohne Schweinefleisch, Allergien pro Kind. Jetzt Angebot anfragen.",
+    metaDescription: "Frisch gekochtes Mittagessen für Kitas und Krippen aus Isernhagen NB: ohne Convenience, ohne Schweinefleisch, Allergien pro Kind. Angebot anfragen.",
     h1: "Kita- und Krippenverpflegung aus Isernhagen",
     statement: "Mittagessen, bei dem die Kita nichts mehr nachrechnen muss.",
     intro: [
@@ -359,7 +359,7 @@ export const servicePages: Record<string, ServicePage> = {
     statement: "Bis 8 Uhr bestellt, mittags auf dem Tisch.",
     intro: [
       "Für Schulen und Horte haben wir ein eigenes Bestellportal: Eltern melden ihre Kinder kostenfrei an, wählen wöchentlich aus dem Speiseplan und ändern Bestellungen bis 8 Uhr am selben Morgen.",
-      "Wir beliefern unter anderem die Friedrich-Dierks-Schule in Isernhagen HB und die Grundschule Brelingen in der Wedemark.",
+      "Wir beliefern unter anderem die Lutherschule in Hannover, die Friedrich-Dierks-Schule in Isernhagen HB und die Grundschule Brelingen in der Wedemark. Zur Wahl stehen jeden Tag ein Fleischgericht und ein vegetarisches.",
     ],
     sections: [
       {
@@ -386,7 +386,8 @@ export const servicePages: Record<string, ServicePage> = {
     faqs: [
       { q: "Was passiert, wenn mein Kind krank ist?", a: "Bestellungen lassen sich bis 8:00 Uhr am selben Morgen im Portal ändern oder stornieren." },
       { q: "Können Lehrkräfte mitessen?", a: "Ja, bei der Anmeldung gibt es eine eigene Auswahl für Lehrkräfte." },
-      { q: "Wie funktioniert die BuT-Abrechnung?", a: "Sie tragen BuT-Nummer und Gültigkeitsdatum im Konto ein. Den Rest rechnen wir direkt mit dem Amt ab." },
+      { q: "Wie funktioniert die BuT-Abrechnung?", a: "Sie tragen BuT-Nummer und Gültigkeitsdatum im Konto ein. Den Rest rechnen wir direkt mit dem Amt ab; mit gültiger Bescheinigung ist das Essen für Ihr Kind kostenfrei." },
+      { q: "Was kostet ein Schulessen?", a: "Das hängt von der Schule ab. An der Lutherschule Hannover sind es zum Beispiel 4,00 € pro Mahlzeit. Den Preis für Ihre Schule nennen wir Ihnen gern." },
     ],
     related: ["/speiseplan", "/allergien", "/kita-verpflegung"],
   },
@@ -424,7 +425,7 @@ export const servicePages: Record<string, ServicePage> = {
   party: {
     slug: "party",
     path: "/partyservice",
-    metaTitle: "Partyservice Isernhagen – orientalisch & international | Haki & Hevi",
+    metaTitle: "Partyservice Isernhagen, orientalisch | Haki & Hevi",
     metaDescription: "Fingerfood, Buffets und orientalische Spezialitäten für Feiern und Firmenfeste in Isernhagen und Hannover. Frisch zubereitet, halal auf Wunsch.",
     h1: "Partyservice mit orientalischer und internationaler Küche",
     statement: "Für Feste, an die sich Ihre Gäste beim Essen erinnern.",

@@ -57,10 +57,10 @@ export function ServicePageView({ page, crumb, children }: { page: ServicePage; 
 
       {children}
 
-      <FaqSection faqs={page.faqs} title="Fragen, die wir dazu oft hören" />
+      <FaqSection faqs={page.faqs} title="Fragen, die wir dazu oft hören" topPad={Boolean(children)} />
 
       <nav aria-label="Verwandte Seiten" className="wrap pb-[var(--section)]">
-        <h2 className="mb-5 text-sm font-semibold uppercase tracking-[0.1em] text-ink-3">Auch interessant</h2>
+        <h2 className="mb-5 text-[0.95rem] font-semibold text-ink">Auch interessant</h2>
         <ul className="grid gap-3 md:grid-cols-3">
           {related.map((r) => (
             <li key={r.href}>

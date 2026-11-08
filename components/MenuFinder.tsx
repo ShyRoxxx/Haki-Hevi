@@ -11,7 +11,8 @@ const labelOf = (id: AllergenId) => allergens.find((a) => a.id === id)?.label ??
 const usedIds = new Set(weekMenu.days.flatMap((d) => d.dishes.flatMap((x) => x.allergens)));
 const filterChips = allergens.filter((a) => usedIds.has(a.id));
 
-export function MenuFinder({ showSides = false }: { showSides?: boolean }) {
+export function MenuFinder({ showSides = false, headingLevel = "h3" }: { showSides?: boolean; headingLevel?: "h2" | "h3" }) {
+  const Heading = headingLevel;
   const [selected, setSelected] = useState<AllergenId[]>([]);
   const [veggie, setVeggie] = useState(false);
   const [dayIdx, setDayIdx] = useState(0);
@@ -39,7 +40,7 @@ export function MenuFinder({ showSides = false }: { showSides?: boolean }) {
   return (
     <div className="rounded-[var(--radius-surface)] bg-card p-5 text-ink shadow-[0_24px_60px_-30px_rgb(0_0_0/0.45)] sm:p-8">
       <div className="flex flex-col gap-1 sm:flex-row sm:items-baseline sm:justify-between">
-        <h3 className="h3">Speiseplan {weekMenu.label}</h3>
+        <Heading className="h3">Speiseplan {weekMenu.label}</Heading>
         <p className="tnum text-ink-2">{weekMenu.range}</p>
       </div>
 
@@ -54,7 +55,7 @@ export function MenuFinder({ showSides = false }: { showSides?: boolean }) {
                 type="button"
                 aria-pressed={on}
                 onClick={() => toggle(a.id)}
-                className={`inline-flex min-h-11 items-center gap-2 rounded-full border-[1.5px] py-1.5 pl-1.5 pr-4 text-[0.95rem] font-semibold transition-[background-color,border-color,color,transform] duration-200 active:scale-[0.97] ${
+                className={`inline-flex min-h-11 items-center gap-2 rounded-full border-[1.5px] py-1.5 pl-1.5 pr-4 text-[0.95rem] font-semibold [transition:background-color_200ms_var(--ease-out),border-color_200ms_var(--ease-out),color_200ms_var(--ease-out),scale_160ms_var(--ease-out)] active:scale-[0.97] ${
                   on ? "border-ink bg-ink text-paper" : "border-[var(--line-strong)] bg-card text-ink hover:border-ink"
                 }`}
               >
@@ -69,7 +70,7 @@ export function MenuFinder({ showSides = false }: { showSides?: boolean }) {
             type="button"
             aria-pressed={veggie}
             onClick={() => setVeggie((v) => !v)}
-            className={`inline-flex min-h-11 items-center gap-2 rounded-full border-[1.5px] px-4 py-1.5 text-[0.95rem] font-semibold transition-[background-color,border-color,color,transform] duration-200 active:scale-[0.97] ${
+            className={`inline-flex min-h-11 items-center gap-2 rounded-full border-[1.5px] px-4 py-1.5 text-[0.95rem] font-semibold [transition:background-color_200ms_var(--ease-out),border-color_200ms_var(--ease-out),color_200ms_var(--ease-out),scale_160ms_var(--ease-out)] active:scale-[0.97] ${
               veggie ? "border-leaf-deep bg-leaf-deep text-on-leaf" : "border-[var(--line-strong)] bg-card text-ink hover:border-ink"
             }`}
           >
@@ -85,7 +86,7 @@ export function MenuFinder({ showSides = false }: { showSides?: boolean }) {
               <strong className="font-semibold">
                 {fit} von {total} Gerichten
               </strong>{" "}
-              passen diese Woche ohne Anpassung.
+              {fit === 1 ? "passt" : "passen"} diese Woche ohne Anpassung.
             </>
           ) : (
             <>Tippen Sie eine Unverträglichkeit an, um zu sehen, welche Gerichte betroffen sind.</>
@@ -98,7 +99,7 @@ export function MenuFinder({ showSides = false }: { showSides?: boolean }) {
               setSelected([]);
               setVeggie(false);
             }}
-            className="inline-flex min-h-11 items-center gap-1.5 rounded-[10px] px-2 text-[0.95rem] font-semibold text-leaf-deep hover:bg-card"
+            className="fade-in inline-flex min-h-11 items-center gap-1.5 rounded-[10px] px-2 text-[0.95rem] font-semibold text-leaf-deep hover:bg-card"
           >
             <RotateCcw size={16} strokeWidth={1.75} aria-hidden /> Auswahl löschen
           </button>
@@ -106,24 +107,27 @@ export function MenuFinder({ showSides = false }: { showSides?: boolean }) {
       </div>
 
       {/* Tagesauswahl auf dem Handy */}
-      <div className="mt-6 grid grid-cols-5 gap-1.5 md:hidden" role="tablist" aria-label="Wochentag wählen">
+      <div className="mt-6 grid grid-cols-5 gap-1.5 md:hidden" role="group" aria-label="Wochentag wählen">
         {weekMenu.days.map((day, i) => {
           const blockedCount = day.dishes.filter((d) => conflicts(d).blocked).length;
           return (
             <button
               key={day.day}
               type="button"
-              role="tab"
-              aria-selected={dayIdx === i}
+              aria-pressed={dayIdx === i}
+              aria-label={`${day.day}, ${day.date}`}
               onClick={() => setDayIdx(i)}
               className={`relative flex min-h-12 flex-col items-center justify-center rounded-[10px] text-[0.9rem] font-semibold leading-tight transition-colors duration-200 ${
                 dayIdx === i ? "bg-ink text-paper" : "bg-paper-2 text-ink"
               }`}
             >
               {day.day.slice(0, 2)}
-              <span className={`tnum text-[0.8rem] font-normal ${dayIdx === i ? "text-paper/75" : "text-ink-3"}`}>{day.date}</span>
+              <span className={`tnum text-[0.875rem] font-normal ${dayIdx === i ? "text-paper/75" : "text-ink-3"}`}>{day.date}</span>
               {active && blockedCount > 0 && (
-                <span aria-label={`${blockedCount} betroffen`} className="absolute right-1.5 top-1.5 size-2 rounded-full bg-turmeric" />
+                <>
+                  <span aria-hidden className="absolute right-1.5 top-1.5 size-2 rounded-full bg-turmeric" />
+                  <span className="sr-only">, {blockedCount} betroffen</span>
+                </>
               )}
             </button>
           );
@@ -132,7 +136,7 @@ export function MenuFinder({ showSides = false }: { showSides?: boolean }) {
 
       <ol className="mt-4 divide-y divide-[var(--line)] border-[var(--line)] md:mt-6 md:border-y">
         {weekMenu.days.map((day, di) => (
-          <li key={day.day} className={`${di === dayIdx ? "grid" : "hidden"} gap-3 py-3 md:grid md:grid-cols-[8.5rem_1fr_1fr] md:gap-5 md:py-5`}>
+          <li key={day.day} className={`day-panel ${di === dayIdx ? "grid" : "hidden"} gap-3 py-3 md:grid md:grid-cols-[8.5rem_1fr_1fr] md:gap-5 md:py-5`}>
             <div className="hidden md:block">
               <p className="font-semibold">{day.day}</p>
               <p className="tnum text-ink-3">{day.date}</p>
@@ -142,8 +146,8 @@ export function MenuFinder({ showSides = false }: { showSides?: boolean }) {
               return (
                 <div
                   key={dish.name}
-                  className={`rounded-[12px] border-[1.5px] p-3.5 transition-[background-color,border-color,opacity] duration-300 ${
-                    c.blocked ? "border-transparent bg-paper-2 opacity-75" : active ? "border-leaf/40 bg-card" : "border-transparent bg-card"
+                  className={`rounded-[12px] border-[1.5px] p-3.5 transition-[background-color,border-color] duration-200 ${
+                    c.blocked ? "border-dashed border-[var(--line-strong)] bg-paper-2" : active ? "border-leaf/40 bg-card" : "border-transparent bg-card"
                   }`}
                 >
                   <p className="flex items-center gap-1.5 text-[0.875rem] font-semibold text-ink-3">
@@ -166,12 +170,12 @@ export function MenuFinder({ showSides = false }: { showSides?: boolean }) {
                     {dish.extra && <span className="text-[0.875rem] text-ink-3">+ {dish.extra}</span>}
                     {active &&
                       (c.blocked ? (
-                        <span className="ml-auto inline-flex items-center gap-1 text-[0.875rem] font-semibold text-ink">
+                        <span className="fade-in ml-auto inline-flex items-center gap-1 text-[0.875rem] font-semibold text-ink">
                           <CircleAlert size={15} strokeWidth={1.75} aria-hidden />
                           {c.hits.length ? `enthält ${c.hits.map(labelOf).join(", ")}` : "mit Fleisch"}
                         </span>
                       ) : (
-                        <span className="ml-auto inline-flex items-center gap-1 text-[0.875rem] font-semibold text-leaf-deep">
+                        <span className="fade-in ml-auto inline-flex items-center gap-1 text-[0.875rem] font-semibold text-leaf-deep">
                           <Check size={15} strokeWidth={2} aria-hidden /> passt
                         </span>
                       ))}

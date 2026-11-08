@@ -2,78 +2,79 @@
 
 import { useEffect } from "react";
 import { usePathname } from "next/navigation";
-import gsap from "gsap";
-import { ScrollTrigger } from "gsap/ScrollTrigger";
 
-gsap.registerPlugin(ScrollTrigger);
-
-const OFFSETS: Record<string, { x?: number; y?: number }> = {
-  up: { y: 28 },
-  down: { y: -20 },
-  left: { x: -32 },
-  right: { x: 32 },
-  fade: {},
+const OFFSETS: Record<string, string> = {
+  up: "translate3d(0, 28px, 0)",
+  down: "translate3d(0, -20px, 0)",
+  left: "translate3d(-32px, 0, 0)",
+  right: "translate3d(32px, 0, 0)",
+  fade: "none",
 };
+
+const EASE = "cubic-bezier(0.22, 1, 0.36, 1)";
 
 /**
  * Gestaffelte Einblendungen für alle Elemente mit data-reveal.
  * data-reveal="up|left|right|down|fade", optional data-delay (Sekunden).
- * Elemente, die gemeinsam im Bild auftauchen, werden um 80 ms versetzt.
+ * Elemente, die gemeinsam ins Bild kommen, werden um 80 ms versetzt.
+ * Läuft auf dem nativen Scrollen (IntersectionObserver + Web Animations API), ohne Scroll-Bibliothek.
  */
 export function RevealController() {
   const pathname = usePathname();
 
   useEffect(() => {
-    const root = document.documentElement;
-    if (root.classList.contains("reduce-motion")) return;
+    if (document.documentElement.classList.contains("reduce-motion")) return;
 
-    let ctx: gsap.Context | undefined;
+    let io: IntersectionObserver | undefined;
+    let queue: HTMLElement[] = [];
+    let raf = 0;
     let cancelled = false;
-    // Erst nach abgeschlossener Hydration Inline-Styles setzen
-    const start = () => {
-      if (cancelled) return;
-      ctx = gsap.context(() => {
-      const els = gsap.utils.toArray<HTMLElement>("[data-reveal]:not([data-revealed])");
-      els.forEach((el) => {
-        const o = OFFSETS[el.dataset.reveal ?? "up"] ?? OFFSETS.up;
-        gsap.set(el, { opacity: 0, x: o.x ?? 0, y: o.y ?? 0 });
-      });
-      ScrollTrigger.batch(els, {
-        start: "top 90%",
-        once: true,
-        onEnter: (batch) => {
-          gsap.to(batch, {
-            opacity: 1,
-            x: 0,
-            y: 0,
-            duration: 0.8,
-            ease: "expo.out",
-            stagger: 0.08,
-            delay: (i, t: HTMLElement) => Number(t.dataset.delay ?? 0),
-            overwrite: true,
-            onComplete() {
-              batch.forEach((b) => {
-                b.setAttribute("data-revealed", "");
-                gsap.set(b, { clearProps: "transform" });
-              });
-            },
-          });
-        },
-      });
+
+    const flush = () => {
+      raf = 0;
+      const batch = queue.sort((a, b) => a.getBoundingClientRect().top - b.getBoundingClientRect().top || a.getBoundingClientRect().left - b.getBoundingClientRect().left);
+      queue = [];
+      batch.forEach((el, i) => {
+        const delay = Math.min(i, 5) * 80 + Number(el.dataset.delay ?? 0) * 1000;
+        const anim = el.animate(
+          [
+            { opacity: 0, transform: OFFSETS[el.dataset.reveal ?? "up"] ?? OFFSETS.up },
+            { opacity: 1, transform: "none" },
+          ],
+          { duration: 800, delay, easing: EASE, fill: "backwards" },
+        );
+        el.setAttribute("data-revealed", "");
+        anim.onfinish = () => anim.cancel();
       });
     };
-    const idle = () => requestAnimationFrame(() => setTimeout(start, 0));
-    if (document.readyState === "complete") idle();
-    else window.addEventListener("load", idle, { once: true });
 
-    const refresh = () => ScrollTrigger.refresh();
-    document.fonts?.ready.then(refresh);
-    window.addEventListener("load", refresh);
+    // Erst nach der Hydration starten, damit React keine fremden Attribute sieht
+    const start = () => {
+      if (cancelled) return;
+      io = new IntersectionObserver(
+        (entries) => {
+          entries.forEach((e) => {
+            if (!e.isIntersecting) return;
+            io?.unobserve(e.target);
+            queue.push(e.target as HTMLElement);
+          });
+          if (queue.length && !raf) raf = requestAnimationFrame(flush);
+        },
+        { rootMargin: "0px 0px -10% 0px" },
+      );
+      document.querySelectorAll<HTMLElement>("[data-reveal]:not([data-revealed])").forEach((el) => io?.observe(el));
+    };
+
+    const idle = () => requestAnimationFrame(() => setTimeout(start, 0));
+    const ric = window.requestIdleCallback ?? ((cb: () => void) => window.setTimeout(cb, 1));
+    if (document.readyState !== "loading") ric(idle, { timeout: 300 });
+    else window.addEventListener("DOMContentLoaded", idle, { once: true });
+
     return () => {
       cancelled = true;
-      window.removeEventListener("load", refresh);
-      window.removeEventListener("load", idle);
-      ctx?.revert();
+      window.removeEventListener("DOMContentLoaded", idle);
+      cancelAnimationFrame(raf);
+      io?.disconnect();
     };
   }, [pathname]);
 

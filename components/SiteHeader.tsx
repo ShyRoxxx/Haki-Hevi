@@ -33,6 +33,11 @@ export function SiteHeader() {
     if (!open) return;
     const prev = document.body.style.overflow;
     document.body.style.overflow = "hidden";
+    const outside = document.querySelectorAll<HTMLElement>("main, footer, [data-callbar]");
+    outside.forEach((el) => el.setAttribute("inert", ""));
+    const mq = window.matchMedia("(min-width: 1024px)");
+    const onMq = () => mq.matches && setOpen(false);
+    mq.addEventListener("change", onMq);
     firstLink.current?.focus();
     const onKey = (e: KeyboardEvent) => {
       if (e.key === "Escape") {
@@ -43,16 +48,17 @@ export function SiteHeader() {
     window.addEventListener("keydown", onKey);
     return () => {
       document.body.style.overflow = prev;
+      outside.forEach((el) => el.removeAttribute("inert"));
+      mq.removeEventListener("change", onMq);
       window.removeEventListener("keydown", onKey);
     };
   }, [open]);
 
   return (
     <header
-      className={`sticky top-0 z-50 h-[var(--header-h)] bg-paper transition-[box-shadow] duration-300 ${
-        scrolled ? "shadow-[0_1px_0_var(--line)]" : ""
-      }`}
+      className="sticky top-0 z-50 h-[var(--header-h)] bg-paper"
     >
+      <span aria-hidden className={`pointer-events-none absolute inset-x-0 bottom-0 h-px bg-[var(--line-strong)] transition-opacity duration-200 ease-[var(--ease-out)] ${scrolled ? "opacity-100" : "opacity-0"}`} />
       <div className="wrap flex h-full items-center justify-between gap-6">
         <Logo className="h-10 sm:h-12" priority />
 
@@ -115,8 +121,11 @@ export function SiteHeader() {
       {/* Vollbild-Menü auf dem Handy */}
       <div
         id="mobile-menu"
-        className={`leaf-field grain fixed inset-0 z-[55] flex flex-col px-[var(--gutter)] pb-8 pt-[calc(var(--header-h)+1.5rem)] transition-[opacity,visibility] duration-300 lg:hidden ${
-          open ? "visible opacity-100" : "invisible opacity-0"
+        role="dialog"
+        aria-modal="true"
+        aria-label="Menü"
+        className={`leaf-field grain fixed inset-0 z-[55] flex flex-col overflow-y-auto overscroll-contain px-[var(--gutter)] pb-8 pt-[calc(var(--header-h)+1.5rem)] transition-[opacity,visibility] ease-[var(--ease-out)] lg:hidden ${
+          open ? "visible opacity-100 duration-[240ms]" : "invisible opacity-0 duration-[160ms]"
         }`}
         aria-hidden={!open}
         inert={!open}
@@ -126,11 +135,11 @@ export function SiteHeader() {
             {[{ href: "/", label: "Start" }, ...mainNav, { href: "/kontakt", label: "Kontakt" }].map((item, i) => (
               <li
                 key={item.href}
-                className="border-b border-white/15 transition-[opacity,transform] duration-500 ease-[var(--ease-out)]"
+                className="border-b border-white/15 transition-[opacity,transform] duration-[420ms] ease-[var(--ease-out)]"
                 style={{
-                  transitionDelay: open ? `${80 + i * 55}ms` : "0ms",
+                  transitionDelay: open ? `${40 + i * 60}ms` : "0ms",
                   opacity: open ? 1 : 0,
-                  transform: open ? "translateY(0)" : "translateY(18px)",
+                  transform: open ? "translateY(0)" : "translateY(12px)",
                 }}
               >
                 <Link

@@ -10,7 +10,7 @@ import { breadcrumbJsonLd, pageMetadata } from "@/lib/seo";
 
 export const metadata: Metadata = pageMetadata({
   title: "Kontakt & Angebot – Catering Isernhagen | Haki & Hevi",
-  description: "Angebot für Kita, Schule, Firma oder Feier anfragen: Haki & Hevi, Dieselstraße 13 A, Isernhagen NB. Telefon 0511 779 513 77, Antwort meist innerhalb von 24 Stunden.",
+  description: "Angebot für Kita, Schule, Firma oder Feier anfragen: Haki & Hevi, Dieselstraße 13 A, Isernhagen NB, Telefon 0511 779 513 77. Antwort meist binnen 24 Stunden.",
   path: "/kontakt",
 });
 

@@ -10,7 +10,7 @@ import { breadcrumbJsonLd, pageMetadata } from "@/lib/seo";
 
 export const metadata: Metadata = pageMetadata({
   title: "Über uns – Haki & Hevi Catering, Isernhagen NB",
-  description: "Haki & Hevi ist ein inhabergeführter Catering-Betrieb aus Isernhagen NB: Kinderverpflegung ohne Convenience, Partyservice mit orientalischer Küche. Lernen Sie uns kennen.",
+  description: "Inhabergeführtes Catering aus Isernhagen NB: Kinderverpflegung ohne Convenience seit über 16 Jahren, dazu Partyservice mit orientalischer Küche.",
   path: "/ueber-uns",
 });
 
@@ -22,7 +22,7 @@ export default function AboutPage() {
         statement="Eine Küche aus Isernhagen, die für Kinder kocht wie für Gäste."
         h1="Über Haki & Hevi Ambiente & Service-Catering"
         intro={[
-          "Wir sind ein regionaler Anbieter von Speisen für Kindergärten, Krippen, Schulen und Horte. Unsere Küche steht im Gewerbegebiet an der Dieselstraße in Isernhagen NB; von hier fahren wir jeden Werktag in Einrichtungen der Region Hannover.",
+          "Wir sind ein regionaler Anbieter von Speisen für Kindergärten, Krippen, Schulen und Horte und versorgen seit über 16 Jahren Einrichtungen in der Region Hannover. Unsere Küche steht im Gewerbegebiet an der Dieselstraße in Isernhagen NB; von hier fahren wir jeden Werktag in Einrichtungen der Region Hannover.",
           "Neben der Kinderverpflegung kochen wir für Firmen und Feste — mit orientalischen Spezialitäten und internationaler Küche. Der Name steht für beides: Ambiente und Service, nicht nur Essen in Thermoboxen.",
         ]}
         aside={
@@ -67,8 +67,8 @@ export default function AboutPage() {
             Woran wir uns messen lassen
           </h2>
           <ul className="mt-10 grid gap-10 md:grid-cols-3">
-            {principles.map((p, i) => (
-              <li key={p.title} className="border-t-2 border-leaf pt-5" data-reveal="up" data-delay={String(i * 0.08)}>
+            {principles.map((p) => (
+              <li key={p.title} className="border-t-2 border-leaf pt-5" data-reveal="up">
                 <h3 className="h3">{p.title}</h3>
                 <p className="mt-3 text-ink-2">{p.text}</p>
               </li>

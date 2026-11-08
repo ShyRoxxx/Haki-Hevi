@@ -31,8 +31,9 @@ export function ContactForm() {
     if (!v("message") && !v("count")) next.message = "Schreiben Sie uns kurz, worum es geht, oder nennen Sie die ungefähre Anzahl.";
     setErrors(next);
     if (Object.keys(next).length) {
-      const first = e.currentTarget.querySelector<HTMLElement>(`[aria-invalid="true"]`);
-      first?.focus();
+      const firstName = next.message ? "message" : next.name ? "name" : email || !phone ? "email" : "phone";
+      const first = e.currentTarget.elements.namedItem(firstName);
+      if (first instanceof HTMLElement) first.focus();
       return;
     }
 
@@ -70,7 +71,7 @@ export function ContactForm() {
           {kinds.map((k) => (
             <label key={k} className="cursor-pointer">
               <input type="radio" name="kind" value={k} checked={kind === k} onChange={() => setKind(k)} className="peer sr-only" />
-              <span className="inline-flex min-h-11 items-center rounded-full border-[1.5px] border-[var(--line-strong)] bg-card px-4 text-[0.97rem] font-semibold transition-[background-color,border-color,color] duration-200 hover:border-ink peer-checked:border-ink peer-checked:bg-ink peer-checked:text-paper peer-focus-visible:outline-3 peer-focus-visible:outline-offset-2 peer-focus-visible:outline-turmeric">
+              <span className="inline-flex min-h-11 items-center rounded-full border-[1.5px] border-[var(--line-strong)] bg-card px-4 text-[0.97rem] font-semibold transition-[background-color,border-color,color] duration-200 hover:border-ink peer-checked:border-ink peer-checked:bg-ink peer-checked:text-paper peer-focus-visible:outline-3 peer-focus-visible:outline-offset-2 peer-focus-visible:outline-ink">
                 {k}
               </span>
             </label>
@@ -83,25 +84,25 @@ export function ContactForm() {
           <label htmlFor={`${id}-org`} className={label}>
             {kind === "Firma" ? "Firma" : isGroup ? "Name der Einrichtung" : "Anlass"} <span className="font-normal text-ink-3">(optional)</span>
           </label>
-          <input id={`${id}-org`} name="org" autoComplete="organization" className={field} placeholder={isGroup ? "z. B. Kita Sonnenblume, Isernhagen" : "z. B. Hochzeit, Firmenjubiläum"} />
+          <input id={`${id}-org`} name="org" autoComplete="organization" className={field} placeholder={isGroup ? "z. B. Kita Sonnenblume, Isernhagen …" : "z. B. Hochzeit, Firmenjubiläum …"} />
         </div>
         <div>
           <label htmlFor={`${id}-count`} className={label}>
             {countLabel}
           </label>
-          <input id={`${id}-count`} name="count" inputMode="numeric" className={field} placeholder="z. B. 45" />
+          <input id={`${id}-count`} name="count" inputMode="numeric" className={field} placeholder="z. B. 45 …" autoComplete="off" />
         </div>
         <div>
           <label htmlFor={`${id}-days`} className={label}>
             {kind === "Partyservice" ? "Datum" : "Liefertage"} <span className="font-normal text-ink-3">(optional)</span>
           </label>
-          <input id={`${id}-days`} name="days" className={field} placeholder={kind === "Partyservice" ? "z. B. 14. März 2027" : "z. B. Montag bis Freitag"} />
+          <input id={`${id}-days`} name="days" className={field} placeholder={kind === "Partyservice" ? "z. B. 14. März 2027 …" : "z. B. Montag bis Freitag …"} />
         </div>
         <div className="sm:col-span-2">
           <label htmlFor={`${id}-allergies`} className={label}>
             Allergien oder Besonderheiten <span className="font-normal text-ink-3">(optional)</span>
           </label>
-          <input id={`${id}-allergies`} name="allergies" className={field} placeholder="z. B. 3 Kinder ohne Milcheiweiß, 1 Kind glutenfrei" />
+          <input id={`${id}-allergies`} name="allergies" className={field} placeholder="z. B. 3 Kinder ohne Milcheiweiß, 1 Kind glutenfrei …" />
         </div>
         <div className="sm:col-span-2">
           <label htmlFor={`${id}-message`} className={label}>
@@ -116,7 +117,7 @@ export function ContactForm() {
             aria-describedby={errors.message ? `${id}-message-err` : undefined}
           />
           {errors.message && (
-            <p id={`${id}-message-err`} className={err}>
+            <p id={`${id}-message-err`} role="alert" className={err}>
               {errors.message}
             </p>
           )}
@@ -134,7 +135,7 @@ export function ContactForm() {
             aria-describedby={errors.name ? `${id}-name-err` : undefined}
           />
           {errors.name && (
-            <p id={`${id}-name-err`} className={err}>
+            <p id={`${id}-name-err`} role="alert" className={err}>
               {errors.name}
             </p>
           )}
@@ -148,6 +149,7 @@ export function ContactForm() {
             name="email"
             type="email"
             autoComplete="email"
+            spellCheck={false}
             className={field}
             aria-invalid={!!errors.contact}
             aria-describedby={errors.contact ? `${id}-contact-err` : undefined}
@@ -168,7 +170,7 @@ export function ContactForm() {
           />
         </div>
         {errors.contact && (
-          <p id={`${id}-contact-err`} className={`${err} sm:col-span-2 !mt-0`}>
+          <p id={`${id}-contact-err`} role="alert" className={`${err} sm:col-span-2 !mt-0`}>
             {errors.contact}
           </p>
         )}
@@ -182,15 +184,17 @@ export function ContactForm() {
         <p id={`${id}-note`} className="max-w-[60ch] text-[0.95rem] text-ink-3">
           Beim Absenden öffnet sich Ihr E-Mail-Programm mit einer fertigen Nachricht an {business.email}. Erst wenn Sie dort auf „Senden“ tippen, geht die Anfrage an uns.
         </p>
-        {opened && (
-          <p role="status" className="rounded-[12px] bg-leaf-pale px-4 py-3 text-ink">
-            Ihr E-Mail-Programm sollte sich geöffnet haben. Falls nicht, schreiben Sie direkt an{" "}
-            <a className="link font-semibold" href={`mailto:${business.email}`}>
-              {business.email}
-            </a>{" "}
-            oder rufen Sie uns an.
-          </p>
-        )}
+        <div role="status" aria-live="polite">
+          {opened && (
+            <p className="rounded-[12px] bg-leaf-pale px-4 py-3 text-ink">
+              Ihr E-Mail-Programm sollte sich geöffnet haben. Falls nicht, schreiben Sie direkt an{" "}
+              <a className="link font-semibold" href={`mailto:${business.email}`}>
+                {business.email}
+              </a>{" "}
+              oder rufen Sie uns an.
+            </p>
+          )}
+        </div>
       </div>
     </form>
   );

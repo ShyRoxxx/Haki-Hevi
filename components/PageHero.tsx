@@ -82,7 +82,7 @@ export function PageHero({
 
         <div className="mt-6 grid gap-10 lg:grid-cols-[minmax(0,7fr)_minmax(0,5fr)] lg:gap-16">
           <div>
-            <p className="display hero-line text-[length:var(--step-5)]">{statement}</p>
+            <p className="display hero-line max-w-[22ch] text-[length:var(--step-4)]">{statement}</p>
             <h1 id="page-title" className="hero-line mt-5 text-[length:var(--step-1)] font-semibold leading-snug text-leaf-deep" style={{ animationDelay: "100ms" }}>
               {h1}
             </h1>

@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { ArrowRight, Star } from "lucide-react";
 import { business, principles } from "@/lib/content";
+import { Highlighter } from "../magic/Highlighter";
 
 export function About() {
   return (
@@ -11,7 +12,7 @@ export function About() {
         </h2>
         <figure className="max-w-[60rem]" data-reveal="up">
           <blockquote className="display text-[length:var(--step-5)] text-ink">
-            <span aria-hidden className="text-leaf">„</span>Eine gesunde, ausgewogene, frische und vollwertige Küche, ohne Conveniencefood.<span aria-hidden className="text-leaf">“</span>
+            <span aria-hidden className="text-leaf">„</span>Eine gesunde, ausgewogene, frische und vollwertige Küche, <Highlighter>ohne Conveniencefood</Highlighter>.<span aria-hidden className="text-leaf">“</span>
           </blockquote>
           <figcaption className="mt-6 text-[length:var(--step-1)] text-ink-2">Darauf legt das Küchenteam von Haki & Hevi bei jedem Mittagessen Wert.</figcaption>
         </figure>
@@ -19,8 +20,8 @@ export function About() {
         <div className="mt-16 grid gap-12 lg:mt-24 lg:grid-cols-[minmax(0,7fr)_minmax(0,5fr)] lg:gap-20">
           <div>
             <dl className="divide-y divide-[var(--line-strong)] border-y border-[var(--line-strong)]">
-              {principles.map((p, i) => (
-                <div key={p.title} className="grid gap-2 py-6 sm:grid-cols-[14rem_1fr] sm:gap-8" data-reveal="up" data-delay={String(i * 0.06)}>
+              {principles.map((p) => (
+                <div key={p.title} className="grid gap-2 py-6 sm:grid-cols-[14rem_1fr] sm:gap-8" data-reveal="up">
                   <dt className="font-display text-[1.35rem] font-semibold leading-tight">{p.title}</dt>
                   <dd className="text-ink-2">{p.text}</dd>
                 </div>
@@ -32,7 +33,7 @@ export function About() {
             <div className="rounded-[var(--radius-surface)] bg-card p-6 sm:p-8" data-reveal="right">
               <p className="font-display text-[1.35rem] font-semibold">Inhabergeführt aus Isernhagen</p>
               <p className="mt-3 text-ink-2">
-                Hinter Haki & Hevi steht Geschäftsführerin {business.owner}. Gekocht wird in der eigenen Küche in der Dieselstraße — für Kindergärten, Krippen, Schulen und Horte, für Firmen und für Feste.
+                Hinter Haki & Hevi steht Geschäftsführerin {business.owner}. Seit über 16 Jahren versorgen wir Schulen und Einrichtungen; gekocht wird jeden Morgen in der eigenen Küche in der Dieselstraße.
               </p>
               <Link href="/ueber-uns" className="link mt-5 inline-flex min-h-11 items-center gap-2 font-semibold text-leaf-deep">
                 Mehr über uns <ArrowRight size={16} strokeWidth={1.75} aria-hidden />
@@ -45,7 +46,10 @@ export function About() {
               className="group flex items-center gap-5 rounded-[var(--radius-surface)] bg-leaf-deep p-6 text-on-leaf transition-colors duration-200 hover:bg-leaf-night sm:p-8"
               data-reveal="right"
             >
-              <span className="font-display text-[3.25rem] font-semibold leading-none tracking-[-0.02em]">{business.rating.value}</span>
+              <span className="font-display text-[3.25rem] font-semibold leading-none tracking-[-0.02em]">
+                {business.rating.value}
+                <span className="sr-only"> von 5 Sternen</span>
+              </span>
               <span>
                 <span className="flex gap-0.5" aria-hidden>
                   {[0, 1, 2, 3, 4].map((i) => (

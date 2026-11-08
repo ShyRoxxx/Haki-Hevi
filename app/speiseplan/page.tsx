@@ -10,7 +10,7 @@ import { breadcrumbJsonLd, faqJsonLd, pageMetadata } from "@/lib/seo";
 
 export const metadata: Metadata = pageMetadata({
   title: "Speiseplan & Allergene – Kita-Catering | Haki & Hevi",
-  description: "Der aktuelle Wochenspeiseplan von Haki & Hevi mit Allergen-Kennziffern und Filter: sehen Sie sofort, welche Gerichte Ihr Kind verträgt. Bestellung im Portal.",
+  description: "Der aktuelle Wochenspeiseplan von Haki & Hevi mit Allergen-Kennziffern und Filter: Sehen Sie sofort, welche Gerichte Ihr Kind verträgt.",
   path: "/speiseplan",
 });
 
@@ -34,7 +34,7 @@ export default function MenuPage() {
 
       <section className="leaf-field grain on-leaf section" aria-label="Speiseplan mit Allergenfilter">
         <div className="wrap max-w-[72rem]">
-          <MenuFinder showSides />
+          <MenuFinder showSides headingLevel="h2" />
           <p className="mt-6 max-w-[70ch] text-on-leaf-2">{weekMenu.sideNote}</p>
         </div>
       </section>

@@ -1,5 +1,6 @@
 import { ArrowUpRight } from "lucide-react";
 import { business, steps } from "@/lib/content";
+import { KitchenDay } from "./KitchenDay";
 
 export function Process() {
   return (
@@ -16,7 +17,7 @@ export function Process() {
 
         <ol className="mt-14 grid gap-10 md:grid-cols-3 md:gap-8">
           {steps.map((step, i) => (
-            <li key={step.title} className="relative" data-reveal="up" data-delay={String(i * 0.08)}>
+            <li key={step.title} className="relative" data-reveal="up">
               <div className="flex items-center gap-4">
                 <span className="grid size-12 shrink-0 place-items-center rounded-full bg-leaf-pale font-display text-xl font-semibold text-leaf-night">
                   {i + 1}
@@ -29,7 +30,9 @@ export function Process() {
           ))}
         </ol>
 
-        <div className="mt-14 flex flex-col gap-4 rounded-[var(--radius-surface)] bg-paper-2 p-6 sm:flex-row sm:items-center sm:justify-between sm:p-8" data-reveal="up">
+        <KitchenDay />
+
+        <div className="mt-6 flex flex-col gap-4 rounded-[var(--radius-surface)] border-[1.5px] border-[var(--line-strong)] p-6 sm:flex-row sm:items-center sm:justify-between sm:p-8" data-reveal="up">
           <p className="max-w-[52ch] text-ink-2">
             <strong className="font-semibold text-ink">Schon angemeldet oder neu dabei?</strong> Bestellungen, Unterkonten und BuT-Nummer verwalten Sie im Bestellportal.
           </p>

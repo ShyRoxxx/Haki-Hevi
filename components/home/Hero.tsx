@@ -32,7 +32,7 @@ export function Hero() {
                 fetchPriority="high"
                 placeholder="blur"
                 quality={70}
-                sizes="(min-width: 1440px) 1344px, 96vw"
+                sizes="(min-width: 1440px) 1344px, (min-width: 1024px) 100vw, 125vw"
                 className="hero-map-img object-cover"
               />
               {/* Entfernungsringe */}
@@ -56,15 +56,11 @@ export function Hero() {
               {deliveryPoints.map((p, i) => {
                 const pos = project("karte-region", p.lat, p.lon);
                 return (
-                  <div
-                    key={p.name}
-                    className="hero-point absolute flex items-center gap-2"
-                    style={{ left: `${pos.x}%`, top: `${pos.y}%`, animationDelay: `${900 + i * 120}ms` }}
-                  >
-                    <span aria-hidden className="block size-3.5 -translate-x-1/2 -translate-y-1/2 rounded-full border-[3px] border-paper bg-turmeric shadow-[0_2px_6px_rgb(0_0_0/0.25)]" />
-                    <span className="-translate-y-1/2 whitespace-nowrap rounded-md bg-card/95 px-2 py-1 text-[0.875rem] leading-tight text-ink shadow-[0_2px_8px_rgb(0_0_0/0.12)]">
+                  <div key={p.name} className="hero-point absolute" style={{ left: `${pos.x}%`, top: `${pos.y}%`, animationDelay: `${900 + i * 120}ms` }}>
+                    <span aria-hidden className="map-dot absolute block size-3.5 rounded-full border-[3px] border-paper bg-turmeric shadow-[0_2px_6px_rgb(0_0_0/0.25)]" />
+                    <span className={`map-label ${p.align === "right" ? "map-label--right" : ""} absolute whitespace-nowrap rounded-md bg-card/95 px-2 py-1 text-[0.875rem] leading-tight text-ink shadow-[0_2px_8px_rgb(0_0_0/0.12)]`}>
                       <span className="font-semibold">{p.name}</span>
-                      <span className="hidden sm:inline text-ink-2"> · {p.place}</span>
+                      <span className="hidden text-ink-2 sm:inline"> · {p.place}</span>
                     </span>
                   </div>
                 );
@@ -79,7 +75,7 @@ export function Hero() {
                   </svg>
                 </div>
                 <span className="hero-ring-once absolute left-0 top-0 block size-16 rounded-full border-2 border-turmeric" aria-hidden />
-                <span className="hero-point absolute right-4 top-0 -translate-y-[170%] sm:left-4 sm:right-auto whitespace-nowrap rounded-md bg-ink px-2 py-1 text-[0.875rem] font-semibold leading-tight text-paper shadow-[0_2px_8px_rgb(0_0_0/0.2)]" style={{ animationDelay: "700ms" }}>
+                <span className="hero-point absolute left-7 top-0 hidden -translate-y-[170%] sm:inline whitespace-nowrap rounded-md bg-ink px-2 py-1 text-[0.875rem] font-semibold leading-tight text-paper shadow-[0_2px_8px_rgb(0_0_0/0.2)]" style={{ animationDelay: "700ms" }}>
                   Unsere Küche<span className="hidden sm:inline font-normal text-on-leaf-2"> · Dieselstraße 13 A</span>
                 </span>
               </div>

@@ -30,7 +30,7 @@ export function SiteFooter() {
         </div>
 
         <div data-reveal="up">
-          <h2 className="mb-4 text-sm font-semibold uppercase tracking-[0.1em] text-ink-3">Angebot</h2>
+          <h2 className="mb-4 text-[0.95rem] font-semibold text-ink">Angebot</h2>
           <ul className="space-y-1">
             {footerNav.map((item) => (
               <li key={item.href}>
@@ -44,7 +44,7 @@ export function SiteFooter() {
 
         <div className="space-y-8" data-reveal="up">
           <div>
-            <h2 className="mb-4 text-sm font-semibold uppercase tracking-[0.1em] text-ink-3">Bürozeiten</h2>
+            <h2 className="mb-4 text-[0.95rem] font-semibold text-ink">Bürozeiten</h2>
             <dl className="tnum space-y-1 text-ink-2">
               <div className="flex justify-between gap-6">
                 <dt>Montag bis Freitag</dt>
@@ -57,7 +57,7 @@ export function SiteFooter() {
             </dl>
           </div>
           <div>
-            <h2 className="mb-4 text-sm font-semibold uppercase tracking-[0.1em] text-ink-3">Liefergebiet</h2>
+            <h2 className="mb-4 text-[0.95rem] font-semibold text-ink">Liefergebiet</h2>
             <p className="text-ink-2">Isernhagen, Wedemark und weitere Orte in der Region Hannover — fragen Sie uns nach Ihrer Adresse.</p>
           </div>
           <a href={business.orderPortal} target="_blank" rel="noopener" className="link font-semibold text-leaf-deep">

@@ -22,7 +22,8 @@ export function MobileCallBar() {
 
   return (
     <div
-      className={`fixed inset-x-0 bottom-0 z-40 border-t border-[var(--line)] bg-paper/95 px-4 pb-[calc(0.75rem+env(safe-area-inset-bottom))] pt-3 backdrop-blur-[2px] transition-[transform,opacity] duration-300 ease-[var(--ease-out)] lg:hidden ${
+      data-callbar
+      className={`fixed inset-x-0 bottom-0 z-40 border-t border-[var(--line)] bg-paper/95 px-4 pb-[calc(0.75rem+env(safe-area-inset-bottom))] pt-3 backdrop-blur-[2px] transition-[translate,opacity] duration-300 ease-[var(--ease-out)] lg:hidden ${
         show ? "translate-y-0 opacity-100" : "pointer-events-none translate-y-full opacity-0"
       }`}
       aria-hidden={!show}

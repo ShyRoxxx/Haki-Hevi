@@ -10,7 +10,7 @@ export function FaqList({ faqs }: { faqs: Faq[] }) {
             {f.q}
             <span
               aria-hidden
-              className="grid size-10 shrink-0 place-items-center rounded-full border-[1.5px] border-[var(--line-strong)] transition-[transform,background-color,border-color,color] duration-300 ease-[var(--ease-out)] group-open:rotate-45 group-open:border-leaf-deep group-open:bg-leaf-deep group-open:text-on-leaf"
+              className="grid size-10 shrink-0 place-items-center rounded-full border-[1.5px] border-[var(--line-strong)] transition-[rotate,background-color,border-color,color] duration-[250ms] ease-[var(--ease-out)] group-open:rotate-45 group-open:border-leaf-deep group-open:bg-leaf-deep group-open:text-on-leaf"
             >
               <Plus size={18} strokeWidth={1.75} />
             </span>
